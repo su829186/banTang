@@ -1,21 +1,17 @@
 package zzr.com.bantang.Fragment;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.jude.rollviewpager.RollPagerView;
-import com.jude.rollviewpager.adapter.StaticPagerAdapter;
-import com.jude.rollviewpager.hintview.ColorPointHintView;
-import com.squareup.picasso.Picasso;
+import com.youth.banner.Banner;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +22,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import zzr.com.bantang.R;
 import zzr.com.bantang.Utils.JsonUtils;
+import zzr.com.bantang.Utils.PicassoImageLoader;
 import zzr.com.bantang.entity.RollViewPagerObj;
 
 /**
@@ -34,64 +31,59 @@ import zzr.com.bantang.entity.RollViewPagerObj;
 public class TitleFragment extends Fragment {
     private RollPagerView mRollViewPager;
     private View root;
-    public ArrayList<Bitmap> imgs=new ArrayList<>();
-    private ArrayList<String> imgPath=new ArrayList<>();
+   // private TestNormalAdapter adapter = new TestNormalAdapter();
+    public ArrayList<Bitmap> imgs = new ArrayList<>();
+    private ArrayList<String> imgPath = new ArrayList<>();
+    private Banner banner;
+
+    private ArrayList<Fragment> fs = new ArrayList<>();
+    private ArrayList<String> ts = new ArrayList<>();
 
 
     public TitleFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        initData();
+    }
+
+    private void initData() {
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        root=inflater.inflate(R.layout.fragment_title,null);
+        root = inflater.inflate(R.layout.fragment_title, null);
+        banner= (Banner) root.findViewById(R.id.vg_banner);
+        //initViewPager();
         rxRetrofit();
-        initViewPager();
-        init();
 
 
 
-        return inflater.inflate(R.layout.fragment_title, container, false);
-    }
 
-    private void init() {
-
+        return root;
     }
 
     /**
      * 轮播图
      */
-    private void initViewPager() {
-        for (String str:imgPath) {
-            final String str1=str;
-            new Thread(){
-                @Override
-                public void run() {
+    private void init() {
 
-                    try {
-                        Bitmap bitmap = Picasso.with(getActivity()).load(str1).get();
-                        System.out.println("---bitmap");
-                        imgs.add(bitmap);
-                        System.out.println("---imgs");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-        mRollViewPager= (RollPagerView) root.findViewById(R.id.roll_view_pager);
 
-        //设置播放时间间隔
-        mRollViewPager.setPlayDelay(1000);
-        //设置透明度
-        mRollViewPager.setAnimationDurtion(500);
-        //设置适配器
-        mRollViewPager.setAdapter(new TestNormalAdapter());
-        mRollViewPager.setHintView(new ColorPointHintView(getActivity(), Color.YELLOW,Color.WHITE));
+        System.out.println("---init1");
+        banner.setImages(imgPath)
+                .setImageLoader(new PicassoImageLoader())
+                .start();
+        System.out.println("---init2");
+
     }
+
+
 
 
     /**
@@ -126,20 +118,22 @@ public class TitleFragment extends Fragment {
             public void onResponse(Call<RollViewPagerObj> call, Response<RollViewPagerObj> response) {
                 RollViewPagerObj body = response.body();
                 List<RollViewPagerObj.DataBeanX.BannerBean> banner = body.getData().getBanner();
-                for (RollViewPagerObj.DataBeanX.BannerBean temp : banner
-                        ) {
-                    String path=temp.getPhoto().toString();
-                    imgPath.add(path);
+                        for (RollViewPagerObj.DataBeanX.BannerBean temp : banner
+                                ) {
+                            String path = temp.getPhoto().toString();
+                            path=path.substring(0,67);
+                            System.out.println("---"+path);
+                            imgPath.add(path);
+                            System.out.println("---imagepath");
+                        }
+                System.out.println("---"+imgPath.size());
+                  init();
 
-                    System.out.println("---path");
 
 
-
-                    System.out.println("---" + temp.getPhoto().toString());
-
-                }
                 call.cancel();
             }
+
 
             @Override
             public void onFailure(Call<RollViewPagerObj> call, Throwable t) {
@@ -151,35 +145,7 @@ public class TitleFragment extends Fragment {
 
 
 
-
-
-
-
     }
-
-    /**
-     * 轮播图适配器
-     */
-    class TestNormalAdapter extends StaticPagerAdapter {
-
-
-        @Override
-        public View getView(ViewGroup container, int position) {
-            ImageView view = new ImageView(container.getContext());
-            view.setImageBitmap(imgs.get(position));
-            view.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-            return view;
-        }
-
-        @Override
-        public int getCount() {
-            return imgs.size();
-        }
-
-    }
-
 
 
 }
