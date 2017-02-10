@@ -18,7 +18,7 @@
         android:id="@+id/vg_banner"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#3f3"
+        android:background="#eee"
         android:layout_weight="1"></com.youth.banner.Banner>
     <android.support.design.widget.TabLayout
         android:id="@+id/nav_second_top"
@@ -27,9 +27,11 @@
         android:layout_height="30dp"
         app:tabIndicatorColor="#FD6363"
         app:tabSelectedTextColor="#FD6363"></android.support.design.widget.TabLayout>
-    <ListView
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"></ListView>
+        android:layout_weight="3"
+        />
 
 </LinearLayout>

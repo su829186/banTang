@@ -11,92 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"></FrameLayout>
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-    <LinearLayout
+    <com.ashokvarma.bottomnavigation.BottomNavigationBar
+        android:id="@+id/bn_main_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
+        android:background="#0000"
+        android:layout_height="60dp">
 
-        <RadioGroup
-            android:id="@+id/rg_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-            <RadioButton
-                android:id="@+id/rb_title"
-                android:drawableTop="@drawable/nav_bottom_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-
-                android:gravity="center_horizontal"
-                android:text="首页"
-                android:textSize="10sp"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-            <RadioButton
-                android:id="@+id/rb_find"
-                android:drawableTop="@drawable/nav_bottom_find"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-
-                android:gravity="center_horizontal"
-                android:text="发现"
-                android:textSize="10sp"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-            <ImageView
-                android:id="@+id/iv_send"
-                android:paddingTop="2dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-            <RadioButton
-                android:id="@+id/rb_msg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:drawableTop="@drawable/nav_bottom_msg"
-                android:gravity="center_horizontal"
-                android:text="消息"
-                android:textSize="10sp"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-            <RadioButton
-                android:id="@+id/rb_mine"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:drawableTop="@drawable/nav_bottom_mine"
-                android:gravity="center_horizontal"
-                android:text="我的"
-                android:textSize="10sp"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-        </RadioGroup>
-
-
-    </LinearLayout>
+    </com.ashokvarma.bottomnavigation.BottomNavigationBar>
 </LinearLayout>

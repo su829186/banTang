@@ -5,94 +5,122 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+
+import java.util.ArrayList;
 
 import zzr.com.bantang.Fragment.FindFragment;
+import zzr.com.bantang.Fragment.MineFragment;
+import zzr.com.bantang.Fragment.MsgFragment;
 import zzr.com.bantang.Fragment.TitleFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener{
 
-    private ImageView iv_send;
-    private RadioButton rb_title;
-    private RadioButton rb_find;
-    private RadioButton rb_msg;
-    private RadioButton rb_mine;
-    private RadioGroup rg_bottom;
-    private FragmentManager manager;
-    private FragmentTransaction transaction;
 
     private TextView tv;
+    private BottomNavigationBar main_bar;
+    private ArrayList<Fragment> fragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
-        tv= (TextView) this.findViewById(R.id.tv)   ;
-        initRB();
-
-
-
-        rg_bottom.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.rb_title:
-                        transaction=manager.beginTransaction();
-                        Fragment fragment=new TitleFragment();
-                        transaction.replace(R.id.fl_content,fragment);
-                        transaction.commit();
-                        break;
-                    case R.id.rb_find:
-                        transaction=manager.beginTransaction();
-                        Fragment findFragment=new FindFragment();
-                        transaction.replace(R.id.fl_content,findFragment);
-                        transaction.commit();
-                        break;
-                    case R.id.rb_msg:
-                        transaction=manager.beginTransaction();
-                        Fragment msgFragment=new FindFragment();
-                        transaction.replace(R.id.fl_content,msgFragment);
-                        transaction.commit();
-                        break;
-                    case R.id.rb_mine:
-                        transaction=manager.beginTransaction();
-                        Fragment mineFragment=new FindFragment();
-                        transaction.replace(R.id.fl_content,mineFragment);
-                        transaction.commit();
-                        break;
-                }
-            }
-        });
+        main_bar = (BottomNavigationBar) this.findViewById(R.id.bn_main_bar);
+        initBar();
     }
 
 
 
 
 
-    private void initRB() {
-        iv_send= (ImageView) this.findViewById(R.id.iv_send);
+    private void initBar() {
+        main_bar.setMode(BottomNavigationBar.MODE_FIXED);
+        main_bar.setActiveColor("#FD6363");
+        main_bar.setInActiveColor("#cccccc");
+        main_bar.addItem(new BottomNavigationItem(R.drawable.home_checked,"首页").setInactiveIcon(this.getResources().getDrawable(R.drawable.home)))
+                .addItem(new BottomNavigationItem(R.drawable.community_checked,"发现").setInactiveIcon(this.getResources().getDrawable(R.drawable.community)))
+                //.addItem(new BottomNavigationItem(R.drawable.enter,"").setInactiveIcon(this.getResources().getDrawable(R.drawable.enter)))
+                .addItem(new BottomNavigationItem(R.drawable.msg_checked,"消息").setInactiveIcon(this.getResources().getDrawable(R.drawable.msg)))
+                .addItem(new BottomNavigationItem(R.drawable.personal_checked,"我的").setInactiveIcon(this.getResources().getDrawable(R.drawable.personal)))
+                .initialise();
 
-        Picasso.with(this).load(R.drawable.ic_main_tab_publish_enter).resize(44,44).into(iv_send);
-        rg_bottom= (RadioGroup) this.findViewById(R.id.rg_bottom);
-        rb_title= (RadioButton) this.findViewById(R.id.rb_title);
-        rb_find= (RadioButton) this.findViewById(R.id.rb_find);
-        rb_msg= (RadioButton) this.findViewById(R.id.rb_msg);
-        rb_mine= (RadioButton) this.findViewById(R.id.rb_mine);
-        ((RadioButton)rg_bottom.findViewById(R.id.rb_title)).setChecked(true);
+        initFragment();
 
-        manager=getSupportFragmentManager();
-        transaction=manager.beginTransaction();
-        Fragment fragment=new TitleFragment();
-        transaction.replace(R.id.fl_content,fragment);
+
+
+    }
+
+    private void initFragment() {
+        fragments=getFragments();
+
+        FragmentManager manager=getSupportFragmentManager();
+
+        FragmentTransaction transaction=manager.beginTransaction();
+
+        transaction.add(R.id.fl_content,fragments.get(0));
 
         transaction.commit();
 
+        main_bar.setTabSelectedListener(this);
+
+
+
+
+
+
+
+    }
+
+    private ArrayList<Fragment> getFragments(){
+        ArrayList<Fragment> fragments=new ArrayList<>();
+
+        fragments.add(new TitleFragment());
+        fragments.add(new FindFragment());
+        fragments.add(new MsgFragment());
+        fragments.add(new MineFragment());
+
+        return fragments;
+    }
+
+
+    @Override
+    public void onTabSelected(int position) {
+        if(fragments!=null){
+            if(position<fragments.size()){
+                FragmentManager manager=getSupportFragmentManager();
+                FragmentTransaction transaction=manager.beginTransaction();
+                Fragment fragment=fragments.get(position);
+
+                if(fragment.isAdded()){
+                    transaction.show(fragment);
+                }else {
+                    transaction.add(R.id.fl_content,fragment);
+                }
+                transaction.commitAllowingStateLoss();
+
+            }
+
+        }
+    }
+
+    @Override
+    public void onTabUnselected(int position) {
+        if(fragments!=null){
+            FragmentManager manager=getSupportFragmentManager();
+            FragmentTransaction transaction=manager.beginTransaction();
+            Fragment fragment=fragments.get(position);
+
+            transaction.hide(fragment);
+            transaction.commitAllowingStateLoss();
+        }
+    }
+
+    @Override
+    public void onTabReselected(int position) {
 
     }
 }

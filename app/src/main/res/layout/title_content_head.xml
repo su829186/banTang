@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_title_content_name"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="文章标题"
+        android:gravity="center_vertical"
+        android:textSize="20sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_title_content_userimg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_login_logo"
+            android:paddingRight="10dp"/>
+        <TextView
+            android:id="@+id/tv_title_content_username"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:gravity="center_vertical"
+            android:text="用户名"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"></LinearLayout>
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_topic_detail_item_rec_topic_views"
+            android:paddingRight="5dp"/>
+        <TextView
+            android:id="@+id/tv_title_content_views"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="浏览数" />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_title_content_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="文章介绍"/>
+
+</LinearLayout>
